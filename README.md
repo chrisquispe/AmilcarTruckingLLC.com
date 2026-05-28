@@ -1,95 +1,73 @@
-# Amilcar Trucking LLC — Website
+# React + TypeScript + Vite
 
-I built this frontend website for my dad's trucking business, Amilcar Trucking LLC. It's a modern one-page site built with React, Vite, and Tailwind CSS.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
----
+Currently, two official plugins are available:
 
-## Tech Stack
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-- **React 19** — UI framework
-- **Vite 8** — build tool and dev server
-- **TypeScript** — type safety
-- **Tailwind CSS v4** — styling
-- **Framer Motion** — animations
-- **Lucide React** — icons
+## React Compiler
 
----
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Project Structure
+## Expanding the ESLint configuration
 
-```
-src/
-  components/
-    Navbar.tsx       — sticky navigation bar with smooth scroll and mobile menu
-    Hero.tsx         — full-screen hero section with background image
-    About.tsx        — company info, stats, and values
-    Services.tsx     — service cards (Gravel, Asphalt, Mulch, Sand, Milling, Job Site Support)
-    Contact.tsx      — contact info cards (phone, email, service area)
-    Footer.tsx       — footer with links and company info
-  App.tsx            — root component, wires everything together
-  main.tsx           — entry point
-  index.css          — Tailwind imports and global styles
-```
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
----
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-## Company Info
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-- **Company:** Amilcar Trucking LLC
-- **Phone:** 703-296-9499
-- **Email:** amilcartruckingllc@gmail.com
-- **Service Area:** Virginia
-- **In Business:** 10+ years
-
----
-
-## Services
-
-- Gravel
-- Asphalt
-- Mulch
-- Sand
-- Milling
-- Job Site Support
-
----
-
-## How to Run Locally
-
-```bash
-cd AmilcarTruckingLLC.com
-npm install
-npm run dev
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-Then open `http://localhost:5173` in your browser.
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
----
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-## How to Build for Production
-
-```bash
-npm run build
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-Output goes to the `dist/` folder.
-
----
-
-## Deploying to Vercel
-
-1. Push this repo to GitHub
-2. Go to [vercel.com](https://vercel.com) and import the repo
-3. Set the **root directory** to `AmilcarTruckingLLC.com`
-4. Vercel auto-detects Vite — no extra config needed
-5. A `vercel.json` file is already included for SPA routing
-
----
-
-## Swapping the Hero Background Image
-
-To use a real dump truck photo:
-
-1. Save your photo as `dump-truck.jpg`
-2. Drop it into the `public/` folder
-3. In `src/components/Hero.tsx`, change the `backgroundImage` URL to `/dump-truck.jpg`
